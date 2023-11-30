@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/home/ubuntu/mycelium-healthcheck
-ExecStart=/home/ubuntu/mycelium-healthcheck/venv/bin/gunicorn -b localhost:1232 -w 4 main:app
+ExecStart=/home/ubuntu/mycelium-healthcheck/venv/bin/gunicorn -b 0.0.0.0:1232 -w 4 main:app
 Restart=always
 
 [Install]
