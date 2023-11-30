@@ -1,0 +1,12 @@
+[Unit]
+Description=Mycelium Healthcheck
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/mycelium-healthcheck
+ExecStart=/home/ubuntu/mycelium-healthcheck/venv/bin/gunicorn -b localhost:1232 -w 4 main:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
