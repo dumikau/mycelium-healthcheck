@@ -63,7 +63,7 @@ def get_parent_finality():
         return {"ok": False, "reason": str(err_msg)}, 500
 
     parent_finality = out.decode('utf-8').replace("\n", "")
-    return {"ok": True, "result": int(parent_finality)}, 200
+    return {"ok": True, "finality": str(parent_finality)}, 200
 
 @app.route("/up")
 def is_fleet_healthy():
