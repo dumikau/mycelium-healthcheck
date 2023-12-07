@@ -63,7 +63,7 @@ def get_parent_finality():
         return {"ok": False, "reason": str(err_msg)}, 500
 
     parent_finality = out.decode('utf-8').replace("\n", "")
-    return {"ok": True, "finality": int(parent_finality)}, 200
+    return {"ok": True, "finality": str(parent_finality)}, 200
 
 def get_calibnet_latest_height():
     url = "https://api.calibration.node.glif.io/rpc/v0"
