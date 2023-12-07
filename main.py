@@ -93,6 +93,13 @@ def get_parent_finality_delay():
 
     return {"ok": True, "parent_finality_diff": diff}, 200
 
+@app.route("/topdown/diff/health")
+def is_parent_finality_delay_healthy():
+    parent_finality_diff = get_parent_finality_delay()[0]["parent_finality_diff"]
+    if parent_finality_diff > 20:
+        return {"ok": False}, 500
+    return {"ok": True}, 200
+
 @app.route("/up")
 def is_fleet_healthy():
     url = "https://api.mycelium.calibration.node.glif.io/"
