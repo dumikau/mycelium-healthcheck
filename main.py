@@ -1,4 +1,4 @@
-from requests import post
+from requests import post, get
 from flask import Flask
 import logging
 import re
@@ -63,7 +63,35 @@ def get_parent_finality():
         return {"ok": False, "reason": str(err_msg)}, 500
 
     parent_finality = out.decode('utf-8').replace("\n", "")
-    return {"ok": True, "finality": str(parent_finality)}, 200
+    return {"ok": True, "finality": int(parent_finality)}, 200
+
+def get_calibnet_latest_height():
+    url = "https://api.calibration.node.glif.io/rpc/v0"
+    payload = {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "method": "Filecoin.ChainHead",
+        "params": []
+    }
+
+    headers = {
+        "Content-Type": "application/json"
+    }
+
+    intermediate_response = post(url, json=payload, headers=headers)
+    intermediate_response_json = intermediate_response.json()
+
+    return intermediate_response_json['result']['Height']
+
+@app.route("/topdown/diff")
+def get_parent_finality_delay():
+    calibnet_latest_height = get_calibnet_latest_height()
+
+    parent_finality = get_parent_finality()[0]["finality"]
+
+    diff = int(calibnet_latest_height) - int(parent_finality)
+
+    return {"ok": True, "parent_finality_diff": diff}, 200
 
 @app.route("/up")
 def is_fleet_healthy():
